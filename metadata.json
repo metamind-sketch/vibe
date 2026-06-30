@@ -1,0 +1,8 @@
+{
+  "name": "Vibe Coder",
+  "description": "An elegant landing page for the Vibe Coding movement, featuring an interactive vibe generator and developer playground.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
