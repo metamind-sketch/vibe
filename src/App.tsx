@@ -283,7 +283,7 @@ export default function RetroGrid() {
   // Core App states
   const [selectedVibe, setSelectedVibe] = useState<VibePreset>(VIBES[0]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [selectedPrice, setSelectedPrice] = useState(999);
+  const [selectedPrice, setSelectedPrice] = useState(499);
   const [paymentEmail, setPaymentEmail] = useState("");
   const [paymentPhone, setPaymentPhone] = useState("");
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -307,17 +307,17 @@ export default function RetroGrid() {
 
   useEffect(() => {
     const TAMIL_PURCHASES = [
-      { name: "Karthikeyan", city: "Chennai", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹999", time: "just now" },
+      { name: "Karthikeyan", city: "Chennai", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹499", time: "just now" },
       { name: "Priyadharshini", city: "Madurai", item: "Google AI Studio Pro Tool", price: "₹499", time: "1 min ago" },
       { name: "Suresh Kumar", city: "Coimbatore", item: "GitHub Sync Platform", price: "₹499", time: "just now" },
-      { name: "Anitha Selvam", city: "Trichy", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹999", time: "3 mins ago" },
+      { name: "Anitha Selvam", city: "Trichy", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹499", time: "3 mins ago" },
       { name: "Vigneshwaran", city: "Salem", item: "Vercel Deploy Automation", price: "₹499", time: "2 mins ago" },
-      { name: "Abirami Devi", city: "Tirunelveli", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹999", time: "just now" },
+      { name: "Abirami Devi", city: "Tirunelveli", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹499", time: "just now" },
       { name: "Naveen Raj", city: "Erode", item: "Google AI Studio Pro Tool", price: "₹499", time: "4 mins ago" },
-      { name: "Divya Bharathi", city: "Vellore", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹999", time: "just now" },
+      { name: "Divya Bharathi", city: "Vellore", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹499", time: "just now" },
       { name: "Balaji Prasanna", city: "Thanjavur", item: "GitHub Sync Platform", price: "₹499", time: "5 mins ago" },
       { name: "Kavin Kumar", city: "Tuticorin", item: "Vercel Deploy Automation", price: "₹499", time: "just now" },
-      { name: "Senthamizhan", city: "Thiruvarur", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹999", time: "1 min ago" },
+      { name: "Senthamizhan", city: "Thiruvarur", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹499", time: "1 min ago" },
       { name: "Ramya Pandian", city: "Nagercoil", item: "Google AI Studio Pro Tool", price: "₹499", time: "2 mins ago" }
     ];
 
@@ -679,7 +679,13 @@ export default function RetroGrid() {
                 Vibe Coding
               </span>
               <br />
-              <span className="text-white text-xl sm:text-2xl md:text-3xl font-bold inline-block mt-2">
+              <span 
+                className="text-white text-xl sm:text-2xl md:text-3xl font-bold inline-block mt-2"
+                style={{
+                  width: '292px',
+                  wordSpacing: '0.08em'
+                }}
+              >
                 From Idea to Website in Seconds – Tamil language
               </span>
               <br />
@@ -689,10 +695,9 @@ export default function RetroGrid() {
             </h1>
 
             <p 
-              className="text-xs text-slate-400/90 font-sans leading-relaxed text-center lg:text-left mx-auto lg:mx-0"
+              className="text-xs text-slate-400/90 font-sans leading-relaxed text-center mx-auto"
               style={{
                 width: '317px',
-                marginLeft: '-6px',
                 lineHeight: '1.5'
               }}
             >
@@ -702,14 +707,14 @@ export default function RetroGrid() {
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
               <motion.button
                 onClick={() => {
-                  setSelectedPrice(999);
+                  setSelectedPrice(499);
                   setShowPaymentModal(true);
                 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="w-[196px] px-7 py-3.5 rounded-xl bg-gradient-to-r from-pink-500 via-fuchsia-500 to-rose-500 text-white font-display font-bold text-base shadow-[0_0_25px_rgba(236,72,153,0.45)] flex items-center justify-center space-x-2.5 cursor-pointer border border-pink-400/30"
               >
-                <span>Buy Now ₹999</span>
+                <span>Buy Now ₹499</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
 
