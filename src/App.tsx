@@ -51,10 +51,10 @@ import {
   Wallet as WalletIcon
 } from 'lucide-react';
 
-const dashboardProofImage = "/src/assets/images/dashboard_proof_cards_1782713554723.jpg";
-const aiStudioIdeImage = "/src/assets/images/ai_studio_ide_1782714158581.jpg";
-const githubRepoViewImage = "/src/assets/images/github_repo_view_1782714174915.jpg";
-const vercelDeployStatusImage = "/src/assets/images/vercel_deploy_status_1782714187824.jpg";
+import dashboardProofImage from "./assets/images/dashboard_proof_cards_1782713554723.jpg";
+import aiStudioIdeImage from "./assets/images/ai_studio_ide_1782714158581.jpg";
+import githubRepoViewImage from "./assets/images/github_repo_view_1782714174915.jpg";
+import vercelDeployStatusImage from "./assets/images/vercel_deploy_status_1782714187824.jpg";
 
 // Interfaces for Vibe Presets
 interface VibePreset {
@@ -283,6 +283,7 @@ export default function RetroGrid() {
   // Core App states
   const [selectedVibe, setSelectedVibe] = useState<VibePreset>(VIBES[0]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [selectedPrice, setSelectedPrice] = useState(999);
   const [paymentEmail, setPaymentEmail] = useState("");
   const [paymentPhone, setPaymentPhone] = useState("");
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -290,6 +291,82 @@ export default function RetroGrid() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [qrTimer, setQrTimer] = useState(705); // 11:45 = 11*60 + 45 = 705s
   const [activePaymentTab, setActivePaymentTab] = useState<'upi' | 'cards' | 'netbanking' | 'wallet'>('upi');
+
+  // Top Banner Countdown Timer state (starts at 13:17)
+  const [bannerTimer, setBannerTimer] = useState(13 * 60 + 17);
+
+  // State for dynamic purchasing notifications by Tamil Nadu users
+  const [currentPurchase, setCurrentPurchase] = useState<{
+    name: string;
+    city: string;
+    item: string;
+    price: string;
+    time: string;
+  } | null>(null);
+  const [showNotification, setShowNotification] = useState(false);
+
+  useEffect(() => {
+    const TAMIL_PURCHASES = [
+      { name: "Karthikeyan", city: "Chennai", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹999", time: "just now" },
+      { name: "Priyadharshini", city: "Madurai", item: "Google AI Studio Pro Tool", price: "₹499", time: "1 min ago" },
+      { name: "Suresh Kumar", city: "Coimbatore", item: "GitHub Sync Platform", price: "₹499", time: "just now" },
+      { name: "Anitha Selvam", city: "Trichy", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹999", time: "3 mins ago" },
+      { name: "Vigneshwaran", city: "Salem", item: "Vercel Deploy Automation", price: "₹499", time: "2 mins ago" },
+      { name: "Abirami Devi", city: "Tirunelveli", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹999", time: "just now" },
+      { name: "Naveen Raj", city: "Erode", item: "Google AI Studio Pro Tool", price: "₹499", time: "4 mins ago" },
+      { name: "Divya Bharathi", city: "Vellore", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹999", time: "just now" },
+      { name: "Balaji Prasanna", city: "Thanjavur", item: "GitHub Sync Platform", price: "₹499", time: "5 mins ago" },
+      { name: "Kavin Kumar", city: "Tuticorin", item: "Vercel Deploy Automation", price: "₹499", time: "just now" },
+      { name: "Senthamizhan", city: "Thiruvarur", item: "Vibe Coding Course + 3 Platforms bundle", price: "₹999", time: "1 min ago" },
+      { name: "Ramya Pandian", city: "Nagercoil", item: "Google AI Studio Pro Tool", price: "₹499", time: "2 mins ago" }
+    ];
+
+    // Show initial notification after 5 seconds
+    const initialTimer = setTimeout(() => {
+      const randomItem = TAMIL_PURCHASES[Math.floor(Math.random() * TAMIL_PURCHASES.length)];
+      setCurrentPurchase(randomItem);
+      setShowNotification(true);
+    }, 5000);
+
+    const interval = setInterval(() => {
+      setShowNotification(false);
+      
+      // Delay before showing next notification to let it transition out smoothly
+      setTimeout(() => {
+        const randomItem = TAMIL_PURCHASES[Math.floor(Math.random() * TAMIL_PURCHASES.length)];
+        setCurrentPurchase(randomItem);
+        setShowNotification(true);
+      }, 1000);
+
+    }, 14000); // Trigger a cycle every 14 seconds
+
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(interval);
+    };
+  }, []);
+
+  // Auto-hide the notification after 6.5 seconds
+  useEffect(() => {
+    if (showNotification) {
+      const timer = setTimeout(() => {
+        setShowNotification(false);
+      }, 6500);
+      return () => clearTimeout(timer);
+    }
+  }, [showNotification]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBannerTimer((prev) => {
+        if (prev <= 1) {
+          return 13 * 60 + 17; // Loop back to 13:17 upon completion
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Countdown Timer for UPI QR payment
   useEffect(() => {
@@ -518,6 +595,56 @@ export default function RetroGrid() {
   return (
     <div id="vibe-coder-app" className="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500/30 overflow-x-hidden relative">
       
+      {/* Top Promotional Banner */}
+      <div className="w-full bg-gradient-to-r from-red-500/10 via-slate-950 to-pink-500/10 border-b border-red-500/15 py-2.5 px-4 text-center text-xs relative z-50 flex items-center justify-center gap-2.5 font-sans font-medium tracking-wide">
+        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-red-500/10 border border-red-500/25 text-red-400 font-mono font-bold tabular-nums text-[10px] sm:text-xs">
+          <Clock className="w-3.5 h-3.5 text-red-400 animate-pulse" />
+          {formatTimer(bannerTimer)}
+        </span>
+        <span className="text-slate-200 text-[11px] sm:text-xs font-semibold">
+          🔥 Limited Time Offer: <span className="text-amber-400 font-bold">75% OFF</span> Ends Soon
+        </span>
+      </div>
+
+      {/* Premium Access Unlocked Animated Single Line Bar (Kela thid div) */}
+      <div className="flex justify-center px-4 relative z-50">
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="relative w-[259px] h-[38px] mt-[39px] mb-[2px] bg-slate-900/75 border border-indigo-500/30 rounded-full backdrop-blur-md shadow-[0_0_35px_rgba(99,102,241,0.15)] flex items-center justify-center gap-1.5 overflow-hidden"
+        >
+          {/* Subtle light shimmer passing across the capsule */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-500/10 to-transparent -translate-x-full animate-[shimmer_4s_infinite]" />
+          
+          <div className="flex items-center justify-center gap-1 relative z-10 text-[9px] sm:text-[10px] uppercase font-bold text-slate-200 tracking-wider whitespace-nowrap">
+            <motion.span
+              animate={{ scale: [1, 1.25, 1] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+              className="text-xs select-none"
+            >
+              💎
+            </motion.span>
+            <motion.span
+              animate={{ 
+                filter: ["hue-rotate(0deg)", "hue-rotate(360deg)"],
+                scale: [0.98, 1.02, 0.98]
+              }}
+              transition={{ 
+                filter: { duration: 8, repeat: Infinity, ease: "linear" },
+                scale: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
+              }}
+              className="bg-gradient-to-r from-indigo-400 via-pink-400 to-amber-300 text-transparent bg-clip-text font-display font-black tracking-[0.08em]"
+            >
+              PREMIUM ACCESS UNLOCKED
+            </motion.span>
+            <span className="flex h-1.5 w-1.5 relative ml-1 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-indigo-500"></span>
+            </span>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Decorative Blur Backgrounds */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-500/5 rounded-full blur-[120px] pointer-events-none" />
@@ -529,19 +656,16 @@ export default function RetroGrid() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           {/* Hero text */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="flex justify-center lg:justify-start mb-6">
-              <motion.div 
-                animate={{ scale: [0.98, 1.02, 0.98] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-pink-500/10 to-violet-500/10 border border-pink-500/30 text-pink-400 text-[10px] tracking-widest font-mono shadow-lg shadow-pink-500/5 uppercase"
-              >
-                <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-pulse" />
-                <span className="font-bold">
-                  Exclusive Offer 🚀
-                </span>
-              </motion.div>
-            </div>
+          <div 
+            className="lg:col-span-7 space-y-6"
+            style={{
+              paddingTop: '-6px',
+              paddingBottom: '0px',
+              paddingRight: '1px',
+              marginTop: '-60px'
+            }}
+          >
+
             
             <h1 
               className="text-3xl sm:text-4xl md:text-5xl font-display font-black tracking-tight leading-[1.2] text-center lg:text-left"
@@ -555,12 +679,12 @@ export default function RetroGrid() {
                 Vibe Coding
               </span>
               <br />
-              <span className="text-white">
-                Build Real websites
+              <span className="text-white text-xl sm:text-2xl md:text-3xl font-bold inline-block mt-2">
+                From Idea to Website in Seconds – Tamil language
               </span>
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-fuchsia-400 to-rose-300">
-                Without Learning to Code
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-fuchsia-400 to-rose-300 text-lg sm:text-xl md:text-2xl font-bold inline-block mt-1">
+                Simple No Coding Required
               </span>
             </h1>
 
@@ -577,47 +701,33 @@ export default function RetroGrid() {
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
               <motion.button
-                onClick={() => setShowPaymentModal(true)}
+                onClick={() => {
+                  setSelectedPrice(999);
+                  setShowPaymentModal(true);
+                }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="w-[196px] px-7 py-3.5 rounded-xl bg-gradient-to-r from-pink-500 via-fuchsia-500 to-rose-500 text-white font-display font-bold text-base shadow-[0_0_25px_rgba(236,72,153,0.45)] flex items-center justify-center space-x-2.5 cursor-pointer border border-pink-400/30"
               >
-                <span>Buy Now ₹499</span>
+                <span>Buy Now ₹999</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
 
-              <div className="flex flex-col space-y-4 pt-2">
-                {/* 5,000+ Students & Rating Row (Matching Screenshot layout) */}
-                <div className="flex items-center gap-3.5 bg-slate-900/40 border border-slate-800/80 px-4 py-3 rounded-2xl shadow-xl w-fit hover:border-slate-700/80 transition-colors">
-                  {/* Student Avatars Grid */}
-                  <div className="flex gap-1.5 items-center">
-                    {[
-                      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&h=100&q=80",
-                      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&h=100&q=80",
-                      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&h=100&q=80",
-                      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&h=100&q=80"
-                    ].map((imgUrl, idx) => (
-                      <div key={idx} className="w-8 h-8 rounded-md border border-slate-950 overflow-hidden shrink-0 shadow-md">
-                        <img src={imgUrl} alt="Vibe Coding Student" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Rating text on right */}
-                  <div className="flex flex-col justify-center">
-                    <span className="text-sm font-sans font-extrabold text-white tracking-wide">
-                      5,000+ Students
-                    </span>
-                    <span className="text-xs font-sans font-bold text-amber-500 tracking-wide flex items-center gap-1">
-                      4.9/5.0 Rating <span className="text-amber-400">★★★★★</span>
-                    </span>
-                  </div>
+              <div className="flex flex-col space-y-4 pt-2 w-full lg:max-w-2xl">
+                {/* Embedded YouTube Video Player */}
+                <div className="w-full bg-slate-950/95 border border-slate-800/80 rounded-2xl overflow-hidden aspect-video relative group shadow-[0_12px_40px_rgba(0,0,0,0.5)]">
+                  <iframe
+                    src="https://www.youtube.com/embed/bWeDQcQ-tew"
+                    title="Vibe Coding Masterclass"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="w-full h-full"
+                  ></iframe>
                 </div>
-
-
               </div>
-            </div>
-          </div>
+        </div>
+      </div>
 
           {/* Interactive Learning Steps Player */}
           <div className="lg:col-span-5">
@@ -739,7 +849,7 @@ export default function RetroGrid() {
               }}
               className="flex items-center gap-1.5 bg-slate-900/40 border px-4 py-2 rounded-full text-[10px] sm:text-xs font-mono cursor-pointer transition-colors"
             >
-              <span className="text-purple-400 font-semibold tracking-wide">1. Google AI Studio</span>
+              <span className="text-purple-400 font-semibold tracking-wide">Google AI Studio</span>
               <motion.span 
                 animate={{ 
                   color: ["rgba(100, 116, 139, 1)", "rgba(168, 85, 247, 1)", "rgba(100, 116, 139, 1)"],
@@ -750,7 +860,7 @@ export default function RetroGrid() {
               >
                 ➔
               </motion.span>
-              <span className="text-blue-400 font-semibold tracking-wide">2. GitHub Sync</span>
+              <span className="text-blue-400 font-semibold tracking-wide">GitHub</span>
               <motion.span 
                 animate={{ 
                   color: ["rgba(100, 116, 139, 1)", "rgba(59, 130, 246, 1)", "rgba(100, 116, 139, 1)"],
@@ -761,144 +871,218 @@ export default function RetroGrid() {
               >
                 ➔
               </motion.span>
-              <span className="text-[#00DF89] font-semibold tracking-wide">3. Vercel Deploy</span>
+              <span className="text-[#00DF89] font-semibold tracking-wide">Vercel</span>
             </motion.div>
-          </div>
-          
-          {/* Modern Infinite Horizontal Scrolling Marquee */}
-          <div className="w-full bg-slate-950/95 border border-slate-800/40 rounded-2xl py-6 overflow-hidden flex select-none relative group">
-            {/* Outer gradient masks for clean edges fade */}
-            <div className="absolute top-0 bottom-0 left-0 w-20 bg-gradient-to-r from-slate-950 to-transparent z-10 pointer-events-none" />
-            <div className="absolute top-0 bottom-0 right-0 w-20 bg-gradient-to-l from-slate-950 to-transparent z-10 pointer-events-none" />
-            
-            <motion.div
-              animate={{ x: ["0%", "-50%"] }}
-              transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-              className="flex gap-6 shrink-0 whitespace-nowrap px-4"
-            >
-              {[
-                {
-                  title: "1. Google AI Studio",
-                  subtitle: "Code Workspace",
-                  img: aiStudioIdeImage,
-                  badge: "Workspace IDE",
-                  theme: "border-purple-500/30 text-purple-300 bg-purple-500/10"
-                },
-                {
-                  title: "2. GitHub Push",
-                  subtitle: "Source Sync",
-                  img: githubRepoViewImage,
-                  badge: "GitHub Repo",
-                  theme: "border-blue-500/30 text-blue-300 bg-blue-500/10"
-                },
-                {
-                  title: "3. Vercel Deploy",
-                  subtitle: "Live Ingress",
-                  img: vercelDeployStatusImage,
-                  badge: "Active Live",
-                  theme: "border-emerald-500/30 text-emerald-300 bg-emerald-500/10"
-                },
-                {
-                  title: "1. Google AI Studio",
-                  subtitle: "Code Workspace",
-                  img: aiStudioIdeImage,
-                  badge: "Workspace IDE",
-                  theme: "border-purple-500/30 text-purple-300 bg-purple-500/10"
-                },
-                {
-                  title: "2. GitHub Push",
-                  subtitle: "Source Sync",
-                  img: githubRepoViewImage,
-                  badge: "GitHub Repo",
-                  theme: "border-blue-500/30 text-blue-300 bg-blue-500/10"
-                },
-                {
-                  title: "3. Vercel Deploy",
-                  subtitle: "Live Ingress",
-                  img: vercelDeployStatusImage,
-                  badge: "Active Live",
-                  theme: "border-emerald-500/30 text-emerald-300 bg-emerald-500/10"
-                }
-              ].map((item, idx) => (
-                <div 
-                  key={idx} 
-                  className="w-[290px] sm:w-[330px] shrink-0 bg-slate-900/40 border border-slate-800/60 rounded-xl p-3 flex flex-col space-y-2.5 hover:border-slate-700/80 hover:bg-slate-900/70 transition-all group/card cursor-pointer"
-                >
-                  {/* Title bar */}
-                  <div className="flex justify-between items-center px-0.5">
-                    <div className="flex flex-col">
-                      <span className="text-xs sm:text-sm font-display font-bold text-white tracking-wide">
-                        {item.title}
-                      </span>
-                      <span className="text-[10px] font-mono text-slate-400">
-                        {item.subtitle}
+
+            {/* Google AI Studio, GitHub & Vercel Showcase */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full mt-12 mx-auto text-left">
+              {/* Google AI Studio Product Card (Screen Shot Model) */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+              >
+                <div className="bg-[#0c0c0e] border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden group h-full">
+                  {/* Decorative faint grid lines or accent glow */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
+                  
+                  <div>
+                    {/* Header Row */}
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight">
+                        Google AI Studio
+                      </h3>
+                      <span className="text-xl sm:text-2xl font-sans font-black text-amber-500 tracking-tight">
+                        ₹499
                       </span>
                     </div>
-                    <span className={`text-[8px] sm:text-[9px] font-mono px-2 py-0.5 rounded border ${item.theme} tracking-wider uppercase`}>
-                      {item.badge}
-                    </span>
+
+                    {/* Subtitle / Description */}
+                    <p className="text-[11px] sm:text-[12px] text-slate-400 font-sans leading-relaxed mb-6">
+                      The industry standard for developer experimentation. Build clean, modular prototypes with state-of-the-art Gemini models and zero setup cost.
+                    </p>
+
+                    {/* Features Checklist */}
+                    <div className="space-y-3 mb-6">
+                      {[
+                        { icon: "⚡", text: "Fast AI models" },
+                        { icon: "🧠", text: "Smart prompting" },
+                        { icon: "🔌", text: "API ready" },
+                        { icon: "🛠", text: "No coding needed" },
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center gap-2.5">
+                          <span className="text-amber-500 text-sm font-semibold shrink-0">✓</span>
+                          <span className="text-xs sm:text-sm font-sans font-medium text-slate-200">
+                            {item.icon} {item.text}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Horizontal Divider */}
+                    <div className="h-[1px] bg-slate-800/60 my-5" />
+
+                    {/* Footer Row */}
+                    <div className="flex justify-between items-center text-[10px] sm:text-xs font-mono font-bold tracking-wider text-slate-400 mb-6">
+                      <span className="text-amber-500">4.9/5.0</span>
+                      <span>LIFETIME ACCESS</span>
+                    </div>
                   </div>
+
+                  {/* Button */}
+                  <button 
+                    onClick={() => {
+                      setSelectedPrice(499);
+                      setShowPaymentModal(true);
+                    }}
+                    className="w-full bg-amber-950/25 hover:bg-amber-950/45 border border-amber-500/30 text-amber-500 font-sans font-black text-xs sm:text-sm py-3.5 px-4 rounded-xl tracking-wider transition-all duration-300 uppercase shadow-[0_4px_12px_rgba(245,158,11,0.05)] cursor-pointer text-center"
+                  >
+                    BUY NOW - ₹499
+                  </button>
+                </div>
+              </motion.div>
+
+              {/* GitHub Showcase Product Card */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+              >
+                <div className="bg-[#0c0c0e] border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden group h-full">
+                  {/* Decorative faint grid lines or accent glow */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none" />
                   
-                  {/* Image Showcase */}
-                  <div className="relative rounded-lg border border-slate-800/60 overflow-hidden aspect-[16/10] bg-slate-950">
-                    <img 
-                      src={item.img} 
-                      alt={item.title} 
-                      className="w-full h-full object-cover group-hover/card:scale-[1.03] transition-transform duration-500"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/35 to-transparent pointer-events-none" />
+                  <div>
+                    {/* Header Row */}
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight">
+                        GitHub
+                      </h3>
+                      <span className="text-xl sm:text-2xl font-sans font-black text-emerald-500 tracking-tight">
+                        ₹499
+                      </span>
+                    </div>
+
+                    {/* Subtitle / Description */}
+                    <p className="text-[11px] sm:text-[12px] text-slate-400 font-sans leading-relaxed mb-6">
+                      The world's leading developer platform. Host code, manage projects, perform robust version control, and collaborate with millions of developers seamlessly.
+                    </p>
+
+                    {/* Features Checklist */}
+                    <div className="space-y-3 mb-6">
+                      {[
+                        { icon: "🧑‍💻", text: "Code Hosting" },
+                        { icon: "🔁", text: "Version Control" },
+                        { icon: "🤝", text: "Collaboration" },
+                        { icon: "🤝", text: "Collaboration" },
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center gap-2.5">
+                          <span className="text-emerald-500 text-sm font-semibold shrink-0">✓</span>
+                          <span className="text-xs sm:text-sm font-sans font-medium text-slate-200">
+                            {item.icon} {item.text}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Horizontal Divider */}
+                    <div className="h-[1px] bg-slate-800/60 my-5" />
+
+                    {/* Footer Row */}
+                    <div className="flex justify-between items-center text-[10px] sm:text-xs font-mono font-bold tracking-wider text-slate-400 mb-6">
+                      <span className="text-emerald-500">4.9/5.0</span>
+                      <span>LIFETIME ACCESS</span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
 
-        {/* Social Proof Rating Banner */}
-        <div className="mt-12 flex flex-col items-center justify-center text-center p-6 bg-black border border-slate-900/90 max-w-sm sm:max-w-md mx-auto relative overflow-hidden group shadow-2xl rounded-2xl">
-          {/* Subtle glow border */}
-          <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 opacity-70 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  {/* Button */}
+                  <button 
+                    onClick={() => {
+                      setSelectedPrice(499);
+                      setShowPaymentModal(true);
+                    }}
+                    className="w-full bg-emerald-950/25 hover:bg-emerald-950/45 border border-emerald-500/30 text-emerald-500 font-sans font-black text-xs sm:text-sm py-3.5 px-4 rounded-xl tracking-wider transition-all duration-300 uppercase shadow-[0_4px_12px_rgba(16,185,129,0.05)] cursor-pointer text-center"
+                  >
+                    BUY NOW - ₹499
+                  </button>
+                </div>
+              </motion.div>
+
+              {/* Vercel Showcase Product Card */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                <div className="bg-[#0c0c0e] border border-slate-800/80 rounded-2xl p-6 flex flex-col justify-between shadow-2xl relative overflow-hidden group h-full">
+                  {/* Decorative faint grid lines or accent glow */}
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" />
+                  
+                  <div>
+                    {/* Header Row */}
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight">
+                        Vercel
+                      </h3>
+                      <span className="text-xl sm:text-2xl font-sans font-black text-indigo-500 tracking-tight">
+                        ₹499
+                      </span>
+                    </div>
+
+                    {/* Subtitle / Description */}
+                    <p className="text-[11px] sm:text-[12px] text-slate-400 font-sans leading-relaxed mb-6">
+                      The platform for frontend developers. Build, scale, and secure superfast websites with dynamic instant deployment, Global CDN, and native Git workflow integration.
+                    </p>
+
+                    {/* Features Checklist */}
+                    <div className="space-y-3 mb-6">
+                      {[
+                        { icon: "⚡", text: "Instant Deploy" },
+                        { icon: "🌍", text: "Global CDN" },
+                        { icon: "🔗", text: "Git Integration" },
+                        { icon: "🛠", text: "Serverless" },
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center gap-2.5">
+                          <span className="text-indigo-500 text-sm font-semibold shrink-0">✓</span>
+                          <span className="text-xs sm:text-sm font-sans font-medium text-slate-200">
+                            {item.icon} {item.text}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Horizontal Divider */}
+                    <div className="h-[1px] bg-slate-800/60 my-5" />
+
+                    {/* Footer Row */}
+                    <div className="flex justify-between items-center text-[10px] sm:text-xs font-mono font-bold tracking-wider text-slate-400 mb-6">
+                      <span className="text-indigo-500">4.9/5.0</span>
+                      <span>LIFETIME ACCESS</span>
+                    </div>
+                  </div>
+
+                  {/* Button */}
+                  <button 
+                    onClick={() => {
+                      setSelectedPrice(499);
+                      setShowPaymentModal(true);
+                    }}
+                    className="w-full bg-indigo-950/25 hover:bg-indigo-950/45 border border-indigo-500/30 text-indigo-500 font-sans font-black text-xs sm:text-sm py-3.5 px-4 rounded-xl tracking-wider transition-all duration-300 uppercase shadow-[0_4px_12px_rgba(99,102,241,0.05)] cursor-pointer text-center"
+                  >
+                    BUY NOW - ₹499
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          </div>
           
-          <div className="relative z-10 flex flex-col items-center space-y-4">
-            {/* Overlapping Avatars Stack */}
-            <div className="flex -space-x-3 items-center justify-center">
-              {[
-                "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80",
-                "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80",
-                "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80",
-                "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&h=150&q=80"
-              ].map((imgUrl, i) => (
-                <div key={i} className="relative w-12 h-12 rounded-full border-2 border-black overflow-hidden shrink-0 shadow-md">
-                  <img src={imgUrl} alt="Vibe Creator Portrait" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
-                </div>
-              ))}
-              {/* Overlapping Purple Badge */}
-              <div className="w-12 h-12 rounded-full bg-indigo-600 border-2 border-black flex items-center justify-center shrink-0 shadow-md select-none">
-                <span className="text-[12px] font-bold text-white font-sans">2K+</span>
-              </div>
-            </div>
 
-            {/* Stars Rating Row */}
-            <div className="flex items-center gap-1">
-              {[...Array(4)].map((_, i) => (
-                <Star key={i} className="w-5 h-5 fill-amber-400 text-amber-400 stroke-[1.5]" />
-              ))}
-              {/* Partial 5th Star for 4.8 Rating */}
-              <div className="relative w-5 h-5 select-none shrink-0">
-                <Star className="absolute top-0 left-0 w-5 h-5 text-amber-400 stroke-[1.5]" />
-                <div className="absolute top-0 left-0 w-[80%] h-full overflow-hidden">
-                  <Star className="w-5 h-5 fill-amber-400 text-amber-400 stroke-[1.5]" />
-                </div>
-              </div>
-            </div>
-
-            {/* Rating text */}
-            <p className="text-sm sm:text-base font-sans font-bold tracking-wide text-white">
-              4.8/5 from 2,000+ editors
-            </p>
-          </div>
         </div>
+
+
 
         {/* Why Choose This? Section */}
         <div id="why-choose-us" className="mt-24 pt-12 border-t border-slate-900/60 relative z-10 w-full max-w-5xl mx-auto">
@@ -915,7 +1099,7 @@ export default function RetroGrid() {
           </div>
 
           {/* Responsive grid for features */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 px-4">
             {[
               {
                 icon: <Rocket className="w-5 h-5 text-purple-400" />,
@@ -977,109 +1161,8 @@ export default function RetroGrid() {
           </div>
         </div>
 
-        {/* Key Outcomes Section */}
-        <div className="mt-20 pt-12 border-t border-slate-900/80 w-full">
-          <div className="mb-6">
-            <h3 className="text-xs sm:text-sm font-mono font-bold tracking-[0.2em] text-slate-300 uppercase text-center">
-              KEY OUTCOMES
-            </h3>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 sm:gap-6">
-            {[
-              {
-                title: "Build Real Applications",
-                desc: "Create functional applications like TasteTrail and InstaLite using vibe coding techniques and AI models for rapid development."
-              },
-              {
-                title: "Deploy Live Web Apps",
-                desc: "Launch and manage live applications, ensuring they operate effectively and meet user needs through iterative improvements."
-              },
-              {
-                title: "Evaluate AI-Generated Outputs",
-                desc: "Assess and refine AI-generated code confidently, ensuring it aligns with project goals and user expectations."
-              },
-              {
-                title: "Lead Vibe Coding Projects",
-                desc: "Guide teams in using vibe coding methodologies to streamline app development and enhance collaboration among non-coders and developers."
-              }
-            ].map((outcome, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.1 }}
-                className="bg-slate-900/70 hover:bg-slate-900/90 border border-slate-800/80 hover:border-indigo-500/30 rounded-2xl p-4 sm:p-7 transition-all shadow-xl flex flex-col justify-start group"
-              >
-                <div className="flex flex-col xl:flex-row xl:items-center gap-2 xl:gap-3.5 mb-2 sm:mb-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shrink-0 shadow-sm group-hover:scale-105 transition-transform">
-                    <Check className="w-4 h-4 stroke-[2.5]" />
-                  </div>
-                  <h4 className="text-sm sm:text-lg font-display font-semibold text-white tracking-tight leading-snug">
-                    {outcome.title}
-                  </h4>
-                </div>
-                <p className="text-[11px] sm:text-sm text-slate-400 leading-relaxed font-sans mt-1">
-                  {outcome.desc}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Social Proof Rating */}
-        <div className="mt-24 pt-12 border-t border-slate-900/60 relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center justify-center space-y-8">
-          {/* Header */}
-          <div className="text-center space-y-2">
-            <span className="text-xs sm:text-sm font-mono tracking-[0.2em] text-slate-400 uppercase">
-              - LOVED BY <span className="text-indigo-400 font-bold">CREATORS</span>
-            </span>
-            <h3 className="text-3xl sm:text-5xl font-display font-black text-white tracking-tight">
-              2,127+ Editors
-            </h3>
-            <h4 className="text-2xl sm:text-3xl font-display font-extrabold text-indigo-500 tracking-wide">
-              Trust Us
-            </h4>
-          </div>
 
 
-        </div>
-
-        {/* Full-Width Scrolling Ticker Strip */}
-        <div className="mt-12 w-[100vw] relative left-[50%] right-[50%] -ml-[50vw] -mr-[50vw] bg-black border-y border-slate-800/80 py-3 sm:py-3.5 overflow-hidden flex select-none">
-          <motion.div
-            animate={{ x: ["0%", "-50%"] }}
-            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-            className="flex items-center shrink-0 whitespace-nowrap"
-          >
-            {[
-              "TS READY",
-              "COMMERCIAL USE LICENSE",
-              "PRICE INCREASES SOON",
-              "LIFETIME ACCESS",
-              "INSTANT SETUP",
-              "NO CODING REQUIRED",
-              "AI POWERED",
-              "ONE-TIME PAYMENT",
-              "TS READY",
-              "COMMERCIAL USE LICENSE",
-              "PRICE INCREASES SOON",
-              "LIFETIME ACCESS",
-              "INSTANT SETUP",
-              "NO CODING REQUIRED",
-              "AI POWERED",
-              "ONE-TIME PAYMENT"
-            ].map((item, idx) => (
-              <div key={idx} className="flex items-center">
-                <span className="font-mono font-bold tracking-widest text-slate-200 text-xs sm:text-sm uppercase px-2">
-                  {item}
-                </span>
-                <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)] mx-6 sm:mx-8 shrink-0" />
-              </div>
-            ))}
-          </motion.div>
-        </div>
 
         {/* Frequently Asked Questions Section */}
         <div id="faq-section" className="mt-24 pt-12 border-t border-slate-900/60 relative z-10 w-full max-w-4xl mx-auto px-4">
@@ -1168,6 +1251,8 @@ export default function RetroGrid() {
             })}
           </div>
         </div>
+
+
       </section>
 
 
@@ -1286,7 +1371,7 @@ export default function RetroGrid() {
                         Amount <span className="text-red-500">*</span>
                       </label>
                       <div className="w-full px-4 py-3 rounded-lg border border-[#cce0ff] bg-[#f4f8ff] text-[#1e3a8a] font-bold text-base select-none flex items-center justify-between">
-                        <span>₹ 499.00</span>
+                        <span>₹ {selectedPrice}.00</span>
                         <span className="text-xs text-blue-500 font-mono font-medium tracking-wide">SECURE PAY</span>
                       </div>
                     </div>
@@ -1365,7 +1450,7 @@ export default function RetroGrid() {
                           <span>Paying...</span>
                         </>
                       ) : (
-                        <span>Pay ₹ 499.00</span>
+                        <span>Pay ₹ {selectedPrice}.00</span>
                       )}
                     </button>
                   </div>
@@ -1537,7 +1622,7 @@ export default function RetroGrid() {
                               {/* QR Code */}
                               <div className="bg-white p-3 rounded-xl border border-slate-200/80 shadow-md shrink-0 relative group">
                                 <img 
-                                  src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent('upi://pay?pa=9600123098@okaxis&pn=MetaMinds&am=499&cu=INR')}&color=0c2340&margin=8`} 
+                                  src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(`upi://pay?pa=9600123098@okaxis&pn=MetaMinds&am=${selectedPrice}&cu=INR`)}&color=0c2340&margin=8`} 
                                   alt="UPI QR Code" 
                                   className="w-[130px] h-[130px] block" 
                                 />
@@ -1664,7 +1749,7 @@ export default function RetroGrid() {
                                 }}
                                 className="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-sans font-bold rounded-lg transition-colors shadow-md text-xs cursor-pointer"
                               >
-                                Pay ₹ 499.00
+                                Pay ₹ {selectedPrice}.00
                               </button>
                             </div>
                           </div>
@@ -1760,7 +1845,7 @@ export default function RetroGrid() {
                     Payment Successful!
                   </h3>
                   <p className="text-sm text-slate-500 px-4 leading-relaxed mb-6 font-sans text-center">
-                    Your payment of <strong className="text-slate-800">₹ 499.00</strong> was processed securely. You now have full lifetime access to the Vibe Coding Course!
+                    Your payment of <strong className="text-slate-800">₹ {selectedPrice}.00</strong> was processed securely. You now have full lifetime access to the Vibe Coding Course!
                   </p>
 
                   <div className="bg-slate-50 rounded-xl p-4 text-left border border-slate-100 space-y-2 mb-6 text-xs font-mono text-slate-600 max-w-sm mx-auto">
@@ -1798,6 +1883,47 @@ export default function RetroGrid() {
                 </motion.div>
               )}
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      {/* Live Recent Purchase Toast */}
+      <AnimatePresence>
+        {showNotification && currentPurchase && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.95, transition: { duration: 0.2 } }}
+            transition={{ type: "spring", stiffness: 260, damping: 25 }}
+            className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[9999] max-w-[250px] w-full bg-slate-950/95 border border-slate-800/80 backdrop-blur-xl rounded-lg p-2.5 shadow-[0_12px_30px_rgba(0,0,0,0.6)] text-slate-100 flex gap-2 items-start pointer-events-auto border-l-2 border-l-emerald-500 select-none overflow-hidden"
+          >
+            {/* Live Indicator Pulse Background */}
+            <div className="absolute top-0 right-0 w-12 h-12 bg-emerald-500/5 rounded-full blur-xl pointer-events-none" />
+
+            {/* User Avatar Circle */}
+            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center font-display font-black text-white text-[10px] shrink-0 shadow-md border border-indigo-400/20">
+              {currentPurchase.name.charAt(0)}
+            </div>
+
+            {/* Details Content */}
+            <div className="flex-1 min-w-0">
+              <div className="text-[11px] text-slate-200 font-sans leading-tight">
+                <span className="font-bold text-white">{currentPurchase.name}</span>{" "}
+                <span className="text-slate-400 text-[10px]">from</span>{" "}
+                <span className="font-semibold text-indigo-400">{currentPurchase.city}</span>
+              </div>
+              <p className="text-[10px] text-slate-300 mt-0.5 leading-snug">
+                Bought <span className="text-emerald-400 font-medium">{currentPurchase.item}</span>
+              </p>
+            </div>
+
+            {/* Dismiss Cross */}
+            <button 
+              onClick={() => setShowNotification(false)}
+              className="text-slate-500 hover:text-slate-300 transition-colors shrink-0 p-0.5 cursor-pointer"
+            >
+              <X className="w-3 h-3" />
+            </button>
           </motion.div>
         )}
       </AnimatePresence>
