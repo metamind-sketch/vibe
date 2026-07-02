@@ -80,6 +80,7 @@ interface Track {
   bpm: number;
 }
 
+
 export default function App() {
   // Sound Track list (simulated audio files)
   const TRACKS: Track[] = [
@@ -610,40 +611,71 @@ export default function RetroGrid() {
         </span>
       </div>
 
-      {/* Premium Access Unlocked Animated Single Line Bar (Kela thid div) */}
+      {/* Social Proof Rating Badge (Overlapping student avatars, 2K+ counter, 4.5 stars) */}
       <div className="flex justify-center px-4 relative z-50">
         <motion.div 
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="relative w-[259px] h-[38px] mt-[39px] mb-[2px] bg-slate-900/75 border border-indigo-500/30 rounded-full backdrop-blur-md shadow-[0_0_35px_rgba(99,102,241,0.15)] flex items-center justify-center gap-1.5 overflow-hidden"
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="flex flex-col items-center gap-2.5 mt-[39px] mb-[2px] cursor-default select-none group"
         >
-          {/* Subtle light shimmer passing across the capsule */}
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-indigo-500/10 to-transparent -translate-x-full animate-[shimmer_4s_infinite]" />
-          
-          <div className="flex items-center justify-center gap-1 relative z-10 text-[9px] sm:text-[10px] uppercase font-bold text-slate-200 tracking-wider whitespace-nowrap">
-            <motion.span
-              animate={{ scale: [1, 1.25, 1] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              className="text-xs select-none"
-            >
-              💎
-            </motion.span>
-            <motion.span
-              animate={{ 
-                scale: [0.98, 1.02, 0.98]
-              }}
-              transition={{ 
-                scale: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
-              }}
-              className="text-indigo-400 font-display font-black tracking-[0.08em]"
-            >
-              PREMIUM ACCESS UNLOCKED
-            </motion.span>
-            <span className="flex h-1.5 w-1.5 relative ml-1 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-indigo-500"></span>
-            </span>
+          {/* Overlapping Avatars Cluster */}
+          <div className="flex items-center">
+            {/* Student Avatar 1 */}
+            <div className="w-11 h-11 rounded-full border-[2.5px] border-black/90 overflow-hidden bg-slate-900 shadow-md">
+              <img 
+                src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&h=120&q=80" 
+                alt="Student 1" 
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            {/* Student Avatar 2 */}
+            <div className="w-11 h-11 rounded-full border-[2.5px] border-black/90 overflow-hidden bg-slate-900 -ml-2.5 relative z-10 shadow-md">
+              <img 
+                src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=120&h=120&q=80" 
+                alt="Student 2" 
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            {/* Student Avatar 3 */}
+            <div className="w-11 h-11 rounded-full border-[2.5px] border-black/90 overflow-hidden bg-slate-900 -ml-2.5 relative z-20 shadow-md">
+              <img 
+                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=120&h=120&q=80" 
+                alt="Student 3" 
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            {/* Student Avatar 4 */}
+            <div className="w-11 h-11 rounded-full border-[2.5px] border-black/90 overflow-hidden bg-slate-900 -ml-2.5 relative z-30 shadow-md">
+              <img 
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" 
+                alt="Student 4" 
+                className="w-full h-full object-cover"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            {/* 2K+ blue-purple circle counter */}
+            <div className="w-11 h-11 rounded-full border-[2.5px] border-black/90 bg-indigo-600 flex items-center justify-center -ml-2.5 relative z-40 shadow-lg group-hover:scale-105 transition-transform duration-300">
+              <span className="text-white text-[12px] font-sans font-bold tracking-tight">2K+</span>
+            </div>
+          </div>
+
+          {/* 4.5 Golden Rating Stars */}
+          <div className="flex items-center gap-1 bg-black/40 px-3 py-1 rounded-full border border-slate-900 backdrop-blur-sm shadow-inner">
+            <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+            <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+            <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+            <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+            {/* 0.5 Half-filled Star */}
+            <div className="relative w-4 h-4">
+              <Star className="w-4 h-4 text-slate-800 fill-slate-800 absolute inset-0" />
+              <div className="absolute inset-0 overflow-hidden w-1/2">
+                <Star className="w-4 h-4 fill-amber-500 text-amber-500" />
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
@@ -736,80 +768,52 @@ export default function RetroGrid() {
         </div>
       </div>
 
-          {/* Interactive Learning Steps Player */}
-          <div className="lg:col-span-5">
+          {/* Interactive Learning Steps Player replaced with a minimalist, borderless professional 3-line manifest message with elegant floating animation */}
+          <div className="lg:col-span-5" id="hero-quote-card">
             <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-slate-900/80 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-xl relative overflow-hidden shadow-2xl shadow-pink-500/5"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ 
+                opacity: 1,
+                y: [0, -6, 0]
+              }}
+              transition={{
+                opacity: { duration: 0.8, ease: "easeOut" },
+                y: { 
+                  duration: 5, 
+                  repeat: Infinity, 
+                  ease: "easeInOut" 
+                }
+              }}
+              className="bg-slate-950/20 rounded-xl p-6 sm:p-8 flex flex-col justify-center items-center text-center relative"
             >
-              {/* Subtle ambient glows */}
-              <div className="absolute -top-10 -right-10 w-40 h-40 bg-pink-500/10 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
+              {/* Centered Minimal Container with Exactly Three Lines of Text */}
+              <div className="space-y-4 max-w-sm relative z-10">
+                <motion.h4
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.5 }}
+                  className="text-xs sm:text-sm font-mono tracking-widest text-pink-400 font-bold uppercase"
+                >
+                  Build With It.
+                </motion.h4>
 
-              {/* Title & Badge */}
-              <div className="relative z-10 mb-6 pb-5 border-b border-slate-800/80">
-                <h2 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight mb-2.5 flex items-center gap-2.5">
-                  <span>What You'll Learn</span>
-                  <span className="inline-block animate-bounce duration-1000 origin-bottom hover:scale-120 transition-transform cursor-default select-none filter drop-shadow-[0_2px_8px_rgba(244,63,94,0.3)]">
-                    🧑‍💻
-                  </span>
-                </h2>
-                <div className="inline-flex items-center text-sm font-medium text-emerald-300 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 border border-emerald-500/40 px-3.5 py-1.5 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.2)]">
-                  🚀 From Prompt to Live Website
-                </div>
-              </div>
+                <motion.h3
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2, duration: 0.5 }}
+                  className="text-base sm:text-lg font-display font-bold text-white tracking-tight leading-snug"
+                >
+                  Create websites. Automate tasks. Launch projects.
+                </motion.h3>
 
-              {/* Steps List */}
-              <div className="relative z-10 space-y-3">
-                {heroLearningSteps.map((step) => {
-                  const isActive = activeStep === step.id;
-
-                  return (
-                    <motion.div
-                      key={step.id}
-                      animate={{
-                        scale: isActive ? 1.025 : 1,
-                        backgroundColor: isActive 
-                          ? step.activeBg 
-                          : "rgba(15, 23, 42, 0.5)",
-                        borderColor: isActive 
-                          ? step.activeBorder 
-                          : "rgba(51, 65, 85, 0.4)",
-                        boxShadow: isActive
-                          ? step.activeShadow
-                          : "none"
-                      }}
-                      transition={{ duration: 0.4, ease: "easeInOut" }}
-                      className="relative rounded-xl p-3.5 border flex items-center justify-between overflow-hidden transition-colors"
-                    >
-                      <span className={`text-sm sm:text-base transition-colors duration-300 ${isActive ? `${step.textColor} font-semibold` : "text-slate-300 font-medium"}`}>
-                        {step.text}
-                      </span>
-
-                      {/* Active Step Animation Beam */}
-                      {isActive && (
-                        <motion.span 
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: [0.5, 1, 0.5], scale: [0.9, 1.2, 0.9] }}
-                          transition={{ duration: 1.5, repeat: Infinity }}
-                          className={`flex h-2.5 w-2.5 rounded-full ${step.dotClass}`}
-                        />
-                      )}
-
-                      {/* Vertical connector linking steps 1 through 6 */}
-                      {step.id < 6 && (
-                        <div className="absolute left-6 -bottom-3.5 w-0.5 h-3.5 bg-slate-700 z-20 pointer-events-none overflow-hidden">
-                          <motion.div
-                            animate={{ y: [-14, 14] }}
-                            transition={{ duration: 1.2, repeat: Infinity, ease: "linear" }}
-                            className="w-full h-2 bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.9)]"
-                          />
-                        </div>
-                      )}
-                    </motion.div>
-                  );
-                })}
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3, duration: 0.5 }}
+                  className="text-xs sm:text-sm font-sans text-slate-400 tracking-wide font-normal"
+                >
+                  Turn your ideas into reality—one prompt at a time.
+                </motion.p>
               </div>
             </motion.div>
           </div>
