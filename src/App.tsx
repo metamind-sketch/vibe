@@ -55,6 +55,9 @@ import dashboardProofImage from "./assets/images/dashboard_proof_cards_178271355
 import aiStudioIdeImage from "./assets/images/ai_studio_ide_1782714158581.jpg";
 import githubRepoViewImage from "./assets/images/github_repo_view_1782714174915.jpg";
 import vercelDeployStatusImage from "./assets/images/vercel_deploy_status_1782714187824.jpg";
+import vibeCodingLearningImage from "./assets/images/vibe_coding_learning_1782971508316.jpg";
+import vibeCodingPeekDevImage from "./assets/images/vibe_coding_peek_dev_1782971676165.jpg";
+import vibeCodingLearnBoardImage from "./assets/images/vibe_coding_learn_board_1782973099446.jpg";
 
 // Interfaces for Vibe Presets
 interface VibePreset {
@@ -291,6 +294,7 @@ export default function RetroGrid() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [qrTimer, setQrTimer] = useState(705); // 11:45 = 11*60 + 45 = 705s
   const [activePaymentTab, setActivePaymentTab] = useState<'upi' | 'cards' | 'netbanking' | 'wallet'>('upi');
+  const [activeDirectApp, setActiveDirectApp] = useState<'gpay' | 'phonepe' | 'paytm' | 'cred' | 'bhim' | null>(null);
 
   // Top Banner Countdown Timer state (starts at 13:17)
   const [bannerTimer, setBannerTimer] = useState(13 * 60 + 17);
@@ -627,14 +631,12 @@ export default function RetroGrid() {
             </motion.span>
             <motion.span
               animate={{ 
-                filter: ["hue-rotate(0deg)", "hue-rotate(360deg)"],
                 scale: [0.98, 1.02, 0.98]
               }}
               transition={{ 
-                filter: { duration: 8, repeat: Infinity, ease: "linear" },
                 scale: { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
               }}
-              className="bg-gradient-to-r from-indigo-400 via-pink-400 to-amber-300 text-transparent bg-clip-text font-display font-black tracking-[0.08em]"
+              className="text-indigo-400 font-display font-black tracking-[0.08em]"
             >
               PREMIUM ACCESS UNLOCKED
             </motion.span>
@@ -747,8 +749,11 @@ export default function RetroGrid() {
 
               {/* Title & Badge */}
               <div className="relative z-10 mb-6 pb-5 border-b border-slate-800/80">
-                <h2 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight mb-2.5">
-                  What You'll Learn
+                <h2 className="text-2xl sm:text-3xl font-display font-bold text-white tracking-tight mb-2.5 flex items-center gap-2.5">
+                  <span>What You'll Learn</span>
+                  <span className="inline-block animate-bounce duration-1000 origin-bottom hover:scale-120 transition-transform cursor-default select-none filter drop-shadow-[0_2px_8px_rgba(244,63,94,0.3)]">
+                    🧑‍💻
+                  </span>
                 </h2>
                 <div className="inline-flex items-center text-sm font-medium text-emerald-300 bg-gradient-to-r from-emerald-500/20 via-teal-500/20 to-cyan-500/20 border border-emerald-500/40 px-3.5 py-1.5 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.2)]">
                   🚀 From Prompt to Live Website
@@ -810,6 +815,105 @@ export default function RetroGrid() {
           </div>
           
         </div>
+
+        {/* Professional Before vs After Comparative Board & CTA (Moved Below Grid) */}
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="relative z-10 mt-16 max-w-3xl mx-auto bg-slate-900/60 border border-slate-800/80 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-2xl shadow-pink-500/5"
+        >
+          {/* Subtle ambient glows inside the comparative section */}
+          <div className="absolute -top-10 -right-10 w-40 h-40 bg-pink-500/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
+
+          {/* Title inside the comparative card */}
+          <div className="text-center mb-6 relative z-10 pb-4 border-b border-slate-800/60">
+            <h3 className="text-lg sm:text-xl md:text-2xl font-display font-extrabold text-white tracking-tight leading-snug">
+              🚀 Transform Your Skills with Vibe Coding
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 text-[11px] sm:text-xs md:text-sm font-sans relative z-10">
+            
+            {/* Before Column */}
+            <div className="bg-red-500/5 rounded-xl border border-red-500/10 p-3 sm:p-5 space-y-3">
+              <div className="font-display font-bold text-red-400 flex items-center gap-1.5 pb-2 border-b border-red-500/10 text-xs sm:text-sm md:text-base">
+                <span>Before</span>
+                <span>❌</span>
+              </div>
+              <ul className="space-y-2 text-slate-400 font-medium">
+                <li className="flex items-center gap-1.5 leading-tight whitespace-nowrap truncate">
+                  <span className="text-red-500 shrink-0 select-none text-[10px] sm:text-xs">❌</span>
+                  <span className="truncate">No Coding</span>
+                </li>
+                <li className="flex items-center gap-1.5 leading-tight whitespace-nowrap truncate">
+                  <span className="text-red-500 shrink-0 select-none text-[10px] sm:text-xs">❌</span>
+                  <span className="truncate">Confused</span>
+                </li>
+                <li className="flex items-center gap-1.5 leading-tight whitespace-nowrap truncate">
+                  <span className="text-red-500 shrink-0 select-none text-[10px] sm:text-xs">❌</span>
+                  <span className="truncate">Only Watching</span>
+                </li>
+                <li className="flex items-center gap-1.5 leading-tight whitespace-nowrap truncate">
+                  <span className="text-red-500 shrink-0 select-none text-[10px] sm:text-xs">❌</span>
+                  <span className="truncate">No Portfolio</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* After Column */}
+            <div className="bg-emerald-500/5 rounded-xl border border-emerald-500/15 p-3 sm:p-5 space-y-3">
+              <div className="font-display font-bold text-emerald-400 flex items-center gap-1.5 pb-2 border-b border-emerald-500/15 text-xs sm:text-sm md:text-base">
+                <span>After</span>
+                <span>✅</span>
+              </div>
+              <ul className="space-y-2 text-emerald-100 font-semibold">
+                <li className="flex items-center gap-1.5 leading-tight whitespace-nowrap truncate">
+                  <span className="text-emerald-400 shrink-0 select-none text-[10px] sm:text-xs">✅</span>
+                  <span className="truncate">AI Website Creator</span>
+                </li>
+                <li className="flex items-center gap-1.5 leading-tight whitespace-nowrap truncate">
+                  <span className="text-emerald-400 shrink-0 select-none text-[10px] sm:text-xs">✅</span>
+                  <span className="truncate">Confident Builder</span>
+                </li>
+                <li className="flex items-center gap-1.5 leading-tight whitespace-nowrap truncate">
+                  <span className="text-emerald-400 shrink-0 select-none text-[10px] sm:text-xs">✅</span>
+                  <span className="truncate">Building Projects</span>
+                </li>
+                <li className="flex items-center gap-1.5 leading-tight whitespace-nowrap truncate">
+                  <span className="text-emerald-400 shrink-0 select-none text-[10px] sm:text-xs">✅</span>
+                  <span className="truncate">Real Portfolio</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="my-6 border-t border-dashed border-slate-800/60 relative z-10" />
+
+          {/* Call to Action & Student Social Proof Area */}
+          <div className="flex flex-col items-center justify-center text-center space-y-4 relative z-10">
+            <div className="flex items-center gap-2 text-sm sm:text-base font-display font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-fuchsia-400 to-rose-400 animate-pulse tracking-wide select-none">
+              <span>🔥 Join 500+ Students</span>
+            </div>
+
+            <motion.button
+              onClick={() => {
+                setSelectedPrice(499);
+                setShowPaymentModal(true);
+              }}
+              whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(236,72,153,0.4)" }}
+              whileTap={{ scale: 0.95 }}
+              className="w-full sm:w-auto px-12 py-3.5 rounded-xl bg-gradient-to-r from-pink-500 via-fuchsia-500 to-rose-500 text-white font-display font-extrabold text-base sm:text-lg shadow-[0_4px_20px_rgba(236,72,153,0.3)] border border-pink-400/20 tracking-wide cursor-pointer transition-all duration-300"
+            >
+              Only ₹499
+            </motion.button>
+          </div>
+        </motion.div>
+
+
 
         {/* 3-Step Workflow Pipeline Showroom */}
         <div className="mt-20 pt-10 border-t border-slate-900/60 relative z-10 w-full">
@@ -895,7 +999,22 @@ export default function RetroGrid() {
                   <div>
                     {/* Header Row */}
                     <div className="flex justify-between items-start mb-3">
-                      <h3 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight">
+                      <h3 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight flex items-center gap-2">
+                        <svg viewBox="0 0 24 24" className="w-6 h-6 shrink-0" fill="none">
+                          <defs>
+                            <linearGradient id="ai-studio-top-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#34A853" />
+                              <stop offset="100%" stopColor="#4285F4" />
+                            </linearGradient>
+                            <linearGradient id="ai-studio-bottom-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#4285F4" />
+                              <stop offset="60%" stopColor="#FBBC05" />
+                              <stop offset="100%" stopColor="#EA4335" />
+                            </linearGradient>
+                          </defs>
+                          <rect x="2" y="6" width="14" height="5" rx="2.5" fill="url(#ai-studio-top-grad)" />
+                          <rect x="8" y="13" width="14" height="5" rx="2.5" fill="url(#ai-studio-bottom-grad)" />
+                        </svg>
                         Google AI Studio
                       </h3>
                       <span className="text-xl sm:text-2xl font-sans font-black text-amber-500 tracking-tight">
@@ -962,7 +1081,10 @@ export default function RetroGrid() {
                   <div>
                     {/* Header Row */}
                     <div className="flex justify-between items-start mb-3">
-                      <h3 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight">
+                      <h3 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight flex items-center gap-2">
+                        <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0 text-white" fill="currentColor">
+                          <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                        </svg>
                         GitHub
                       </h3>
                       <span className="text-xl sm:text-2xl font-sans font-black text-emerald-500 tracking-tight">
@@ -1029,7 +1151,10 @@ export default function RetroGrid() {
                   <div>
                     {/* Header Row */}
                     <div className="flex justify-between items-start mb-3">
-                      <h3 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight">
+                      <h3 className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight flex items-center gap-2">
+                        <svg viewBox="0 0 24 24" className="w-4 h-4 shrink-0 text-white" fill="currentColor">
+                          <path d="M24 22.525H0L12 1.475L24 22.525Z" />
+                        </svg>
                         Vercel
                       </h3>
                       <span className="text-xl sm:text-2xl font-sans font-black text-indigo-500 tracking-tight">
@@ -1497,101 +1622,8 @@ export default function RetroGrid() {
                     </div>
                   </div>
 
-                  {/* Razorpay Two-Column Body */}
-                  <div className="grid grid-cols-1 md:grid-cols-[240px_1fr] min-h-[425px] bg-white">
-                    {/* Left Sidebar */}
-                    <div className="bg-[#f8fafc] border-r border-[#e2e8f0] p-3 flex flex-col justify-between">
-                      <div className="space-y-1.5">
-                        {/* UPI Tab */}
-                        <button
-                          type="button"
-                          onClick={() => setActivePaymentTab('upi')}
-                          className={`w-full text-left p-3 rounded-lg border transition-all text-xs flex flex-col cursor-pointer ${
-                            activePaymentTab === 'upi'
-                              ? 'bg-white border-[#cbd5e1] shadow-sm ring-1 ring-blue-500/10'
-                              : 'bg-transparent border-transparent hover:bg-slate-100'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between w-full mb-1">
-                            <span className="font-bold text-slate-800">UPI</span>
-                            <span className="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100">
-                              2 Offers
-                            </span>
-                          </div>
-                          <span className="text-[10px] text-slate-500 font-medium">GPay, PhonePe, Paytm...</span>
-                        </button>
-
-                        {/* Cards Tab */}
-                        <button
-                          type="button"
-                          onClick={() => setActivePaymentTab('cards')}
-                          className={`w-full text-left p-3 rounded-lg border transition-all text-xs flex flex-col cursor-pointer ${
-                            activePaymentTab === 'cards'
-                              ? 'bg-white border-[#cbd5e1] shadow-sm ring-1 ring-blue-500/10'
-                              : 'bg-transparent border-transparent hover:bg-slate-100'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between w-full mb-1">
-                            <span className="font-bold text-slate-800 flex items-center gap-1.5">
-                              <CreditCard className="w-3.5 h-3.5 text-slate-400" />
-                              Cards
-                            </span>
-                            <span className="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 scale-95 origin-right">
-                              Upto 1.5% savings
-                            </span>
-                          </div>
-                          <span className="text-[10px] text-slate-500 font-medium">Visa, Mastercard, RuPay...</span>
-                        </button>
-
-                        {/* Netbanking Tab */}
-                        <button
-                          type="button"
-                          onClick={() => setActivePaymentTab('netbanking')}
-                          className={`w-full text-left p-3 rounded-lg border transition-all text-xs flex flex-col cursor-pointer ${
-                            activePaymentTab === 'netbanking'
-                              ? 'bg-white border-[#cbd5e1] shadow-sm ring-1 ring-blue-500/10'
-                              : 'bg-transparent border-transparent hover:bg-slate-100'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between w-full mb-1">
-                            <span className="font-bold text-slate-800 flex items-center gap-1.5">
-                              <Globe className="w-3.5 h-3.5 text-slate-400" />
-                              Netbanking
-                            </span>
-                          </div>
-                          <span className="text-[10px] text-slate-500 font-medium">SBI, HDFC, ICICI, Axis...</span>
-                        </button>
-
-                        {/* Wallet Tab */}
-                        <button
-                          type="button"
-                          onClick={() => setActivePaymentTab('wallet')}
-                          className={`w-full text-left p-3 rounded-lg border transition-all text-xs flex flex-col cursor-pointer ${
-                            activePaymentTab === 'wallet'
-                              ? 'bg-white border-[#cbd5e1] shadow-sm ring-1 ring-blue-500/10'
-                              : 'bg-transparent border-transparent hover:bg-slate-100'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between w-full mb-1">
-                            <span className="font-bold text-slate-800 flex items-center gap-1.5">
-                              <WalletIcon className="w-3.5 h-3.5 text-slate-400" />
-                              Wallet
-                            </span>
-                            <span className="text-[9px] font-semibold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-100 scale-95 origin-right">
-                              INR 200 back
-                            </span>
-                          </div>
-                          <span className="text-[10px] text-slate-500 font-medium">Paytm, PhonePe Wallet...</span>
-                        </button>
-                      </div>
-
-                      {/* Secured Footer Info inside Sidebar */}
-                      <div className="border-t border-[#e2e8f0]/60 pt-3 text-[10px] text-slate-400 text-center flex flex-col items-center gap-1">
-                        <span className="font-semibold text-slate-500">PCI DSS COMPLIANT</span>
-                        <span>MID_METAMINDS_2026</span>
-                      </div>
-                    </div>
-
+                  {/* Razorpay Single-Column Body */}
+                  <div className="min-h-[425px] bg-white">
                     {/* Right Panel Main View */}
                     <div className="p-6 flex flex-col justify-between">
                       {/* Top Offers Banner */}
@@ -1612,7 +1644,29 @@ export default function RetroGrid() {
                       {/* Tab Content Rendering */}
                       <div className="flex-1 flex flex-col">
                         {activePaymentTab === 'upi' && (
-                          <div className="flex-1 flex flex-col">
+                          <div className="flex-1 flex flex-col relative">
+                            {activeDirectApp && (
+                              <div className="absolute inset-0 bg-white/95 z-20 flex flex-col items-center justify-center text-center p-6 rounded-2xl">
+                                <div className="relative mb-4">
+                                  <div className="w-16 h-16 rounded-full bg-blue-50 border border-blue-100 flex items-center justify-center animate-pulse">
+                                    <Loader2 className="w-8 h-8 text-blue-600 animate-spin" />
+                                  </div>
+                                  <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 rounded-full border-2 border-white flex items-center justify-center">
+                                    <span className="text-white text-[10px] font-bold">✓</span>
+                                  </div>
+                                </div>
+                                <h4 className="text-sm font-bold text-slate-800 tracking-wider mb-2 font-sans">
+                                  Opening {activeDirectApp === 'gpay' ? 'Google Pay' : activeDirectApp.charAt(0).toUpperCase() + activeDirectApp.slice(1)}...
+                                </h4>
+                                <p className="text-xs text-slate-500 max-w-xs mb-3 font-sans leading-relaxed">
+                                  Direct mobile pay initiated! Please check your device to complete the secure payment.
+                                </p>
+                                <div className="px-3 py-1.5 bg-blue-50 rounded-lg text-[11px] font-mono font-medium text-blue-700 border border-blue-100">
+                                  Amount: ₹{selectedPrice}.00
+                                </div>
+                              </div>
+                            )}
+
                             {/* Title & Timer row */}
                             <div className="flex items-center justify-between mb-3">
                               <span className="text-xs font-bold text-slate-700 tracking-wider uppercase font-mono">UPI QR</span>
@@ -1641,17 +1695,102 @@ export default function RetroGrid() {
                               {/* Scan Info & Controls */}
                               <div className="flex-1 text-center sm:text-left space-y-3">
                                 <div>
-                                  <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-1">
-                                    Scan the QR using any UPI App
+                                  <p className="text-[11px] font-medium text-slate-500 uppercase tracking-wider mb-2">
+                                    Scan the QR or click direct payment apps
                                   </p>
                                   
                                   {/* UPI App Badges */}
-                                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mb-2">
-                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#5f259f] text-white select-none">PhonePe</span>
-                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#4285F4] text-white select-none">GPay</span>
-                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#002E6E] text-white select-none">Paytm</span>
-                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-black text-white select-none">CRED</span>
-                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#e87722] text-white select-none">BHIM</span>
+                                  <div className="flex flex-wrap items-center justify-center sm:justify-start gap-1.5 mb-3.5">
+                                    <button
+                                      type="button"
+                                      disabled={isProcessingPayment}
+                                      onClick={() => {
+                                        setActiveDirectApp('phonepe');
+                                        setIsProcessingPayment(true);
+                                        setTimeout(() => {
+                                          setIsProcessingPayment(false);
+                                          setActiveDirectApp(null);
+                                          setPaymentStep('success');
+                                          setPaymentSuccess(true);
+                                        }, 1200);
+                                      }}
+                                      className="text-[10px] font-bold px-2 py-1 rounded bg-[#5f259f] text-white hover:opacity-90 active:scale-95 transition-all cursor-pointer flex items-center gap-1 select-none"
+                                    >
+                                      PhonePe
+                                    </button>
+ 
+                                    <button
+                                      type="button"
+                                      disabled={isProcessingPayment}
+                                      onClick={() => {
+                                        setActiveDirectApp('gpay');
+                                        setIsProcessingPayment(true);
+                                        setTimeout(() => {
+                                          setIsProcessingPayment(false);
+                                          setActiveDirectApp(null);
+                                          setPaymentStep('success');
+                                          setPaymentSuccess(true);
+                                        }, 1200);
+                                      }}
+                                      className="text-[10px] font-bold px-3 py-1.5 rounded-lg bg-[#4285F4] text-white hover:bg-[#357ae8] active:scale-95 transition-all cursor-pointer flex items-center gap-1.5 shadow-md shadow-blue-400/20 ring-2 ring-blue-100"
+                                    >
+                                      <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-ping inline-block shrink-0" />
+                                      GPay (Direct Pay)
+                                    </button>
+ 
+                                    <button
+                                      type="button"
+                                      disabled={isProcessingPayment}
+                                      onClick={() => {
+                                        setActiveDirectApp('paytm');
+                                        setIsProcessingPayment(true);
+                                        setTimeout(() => {
+                                          setIsProcessingPayment(false);
+                                          setActiveDirectApp(null);
+                                          setPaymentStep('success');
+                                          setPaymentSuccess(true);
+                                        }, 1200);
+                                      }}
+                                      className="text-[10px] font-bold px-2 py-1 rounded bg-[#002E6E] text-white hover:opacity-90 active:scale-95 transition-all cursor-pointer flex items-center gap-1 select-none"
+                                    >
+                                      Paytm
+                                    </button>
+ 
+                                    <button
+                                      type="button"
+                                      disabled={isProcessingPayment}
+                                      onClick={() => {
+                                        setActiveDirectApp('cred');
+                                        setIsProcessingPayment(true);
+                                        setTimeout(() => {
+                                          setIsProcessingPayment(false);
+                                          setActiveDirectApp(null);
+                                          setPaymentStep('success');
+                                          setPaymentSuccess(true);
+                                        }, 1200);
+                                      }}
+                                      className="text-[10px] font-bold px-2 py-1 rounded bg-black text-white hover:opacity-90 active:scale-95 transition-all cursor-pointer flex items-center gap-1 select-none"
+                                    >
+                                      CRED
+                                    </button>
+ 
+                                    <button
+                                      type="button"
+                                      disabled={isProcessingPayment}
+                                      onClick={() => {
+                                        setActiveDirectApp('bhim');
+                                        setIsProcessingPayment(true);
+                                        setTimeout(() => {
+                                          setIsProcessingPayment(false);
+                                          setActiveDirectApp(null);
+                                          setPaymentStep('success');
+                                          setPaymentSuccess(true);
+                                        }, 1200);
+                                      }}
+                                      className="text-[10px] font-bold px-2 py-1 rounded bg-[#e87722] text-white hover:opacity-90 active:scale-95 transition-all cursor-pointer flex items-center gap-1 select-none"
+                                    >
+                                      BHIM
+                                    </button>
                                   </div>
 
                                   <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-600 bg-emerald-50 border border-emerald-100 px-2 py-0.5 rounded-full select-none">
